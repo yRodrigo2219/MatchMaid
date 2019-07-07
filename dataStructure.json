@@ -1,0 +1,85 @@
+{
+    "User":[
+        {
+            "id": "",
+            "userinfo":{
+                "nome": "",
+                "celular": "",
+                "email": "",
+                "image": "",
+                "estrelas": 0,
+                "idade": 0,
+                "rg": "",
+                "cpf": ""
+            },
+            "localizacao":{
+                "estado": "",
+                "cidade": "",
+                "cep": "",
+                "endereco": "",
+                "latitude": 0.0,
+                "longitude": 0.0
+            },
+            "dias_disponiveis":{
+                "segunda": false,
+                "terca": false,
+                "quarta": false,
+                "quinta": false,
+                "sexta": false,
+                "sabado": false,
+                "domigo": false
+            }
+        },
+        {
+            "...":"..."
+        }
+    ],
+    "Maid":[
+        {
+            "id": "",
+            "premium":{
+                "state": false,
+                "expire_date": ""
+            },
+            "userinfo":{
+                "nome": "",
+                "celular": "",
+                "email": "",
+                "image": "",
+                "estrelas": 0,
+                "idade": 0,
+                "rg": "",
+                "cpf": ""
+            },
+            "localizacao":{
+                "estado": "",
+                "cidade": "",
+                "cep": "",
+                "endereco": "",
+                "latitude": 0.0,
+                "longitude": 0.0
+            },
+            "servicos":{
+                "preco_hora": 0.0,
+                "baba": false,
+                "limpar_casa": false,
+                "lavar_louca": false,
+                "lavar_roupa": false,
+                "cuidar_casa": false,
+                "cozinhar": false
+            },
+            "dias_disponiveis":{
+                "segunda": false,
+                "terca": false,
+                "quarta": false,
+                "quinta": false,
+                "sexta": false,
+                "sabado": false,
+                "domigo": false
+            }
+        },
+        {
+            "...":"..."
+        }
+    ]
+}
