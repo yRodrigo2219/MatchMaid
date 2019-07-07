@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, 
     TextInput,  
-    Button } from 'react-native';
+    Button, 
+    AsyncStorage } from 'react-native';
 
 export default class SignIn extends Component{
     state = {
@@ -17,8 +18,9 @@ export default class SignIn extends Component{
         this.setState({password: password})
     }
 
-    handleSignInAction = () => {
-
+    handleSignInAction = async () => {
+        await AsyncStorage.setItem('userToken', 'abc');
+        this.props.navigation.navigate('App');
     }
 
     render(){

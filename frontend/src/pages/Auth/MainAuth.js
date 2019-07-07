@@ -4,7 +4,7 @@ import { View,
     Text, 
     Button } from 'react-native';
 
-export default class Main extends Component{
+export default class MainAuth extends Component{
     render(){
         return(
             <View>
