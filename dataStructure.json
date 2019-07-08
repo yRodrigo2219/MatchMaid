@@ -6,7 +6,7 @@
                 "nome": "",
                 "celular": "",
                 "email": "",
-                "image": "",
+                "imagem": "",
                 "estrelas": 0,
                 "idade": 0,
                 "rg": "",
@@ -27,7 +27,7 @@
                 "quinta": false,
                 "sexta": false,
                 "sabado": false,
-                "domigo": false
+                "domingo": false
             }
         },
         {
@@ -45,7 +45,7 @@
                 "nome": "",
                 "celular": "",
                 "email": "",
-                "image": "",
+                "imagem": "",
                 "estrelas": 0,
                 "idade": 0,
                 "rg": "",
@@ -75,7 +75,7 @@
                 "quinta": false,
                 "sexta": false,
                 "sabado": false,
-                "domigo": false
+                "domingo": false
             }
         },
         {

@@ -4,7 +4,6 @@ import { createStackNavigator,
 
 import MainAuth from "./pages/Auth/MainAuth";
 import SignUp from "./pages/Auth/SignUp";
-import SignIn from "./pages/Auth/SignIn";
 import UserSignUp from "./pages/Auth/UserSignUp";
 import MaidSignUp from "./pages/Auth/MaidSignUp"
 import AuthLoading from "./pages/Auth/AuthLoading"
@@ -17,9 +16,6 @@ const AuthNavigator = createStackNavigator({
     },
     SignUpScreen:{
         screen: SignUp
-    },
-    SignInScreen:{
-        screen: SignIn
     },
     UserSignUpScreen:{
         screen: UserSignUp
