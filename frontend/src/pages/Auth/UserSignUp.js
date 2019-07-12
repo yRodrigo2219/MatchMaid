@@ -10,12 +10,15 @@ import { CheckBox,
 export default class UserSignUp extends Component{
     state = {
         dias_da_semana:{
+            segunda: false,
+            terca: false,
+            quarta: false,
+            quinta: false,
+            sexta: false,
+            sabado: false,
             domingo: false
         },
-        servicos:{
-            baba: false
-        },
-        value: 0
+        value : 0
     }
 
     handleCheckSelection = (first, second) =>{
@@ -31,8 +34,42 @@ export default class UserSignUp extends Component{
         return(
             <View>
                 <TextInput
-                    placeholder="User Sign Up"
+                    placeholder="Nome"
                 />
+
+                <TextInput
+                    placeholder="Sobrenome"
+                 />
+
+                <TextInput
+                    placeholder="Cidade"
+                />
+
+                <TextInput
+                    placeholder="Estado"
+                />
+
+                <TextInput
+                    placeholder="CEP"
+                />
+                
+                <TextInput
+                    placeholder="Endereço"
+                />
+
+                <TextInput
+                    placeholder="Email"
+                 />
+
+                <TextInput
+                    placeholder="CPF"
+                />
+
+                <TextInput
+                    placeholder="RG"
+                />
+
+                <Text> Dias da Semana</Text>
 
                 <CheckBox
                     title='Domingo'
@@ -41,9 +78,39 @@ export default class UserSignUp extends Component{
                 />
 
                 <CheckBox
-                    title='Babá'
-                    checked={this.state.servicos.baba}
-                    onPress={()=>{this.handleCheckSelection("servicos","baba")}}
+                    title='Segunda'
+                    checked={this.state.dias_da_semana.segunda}
+                    onPress={()=>{this.handleCheckSelection("dias_da_semana","segunda")}}
+                />
+
+                <CheckBox
+                    title='Terça'
+                    checked={this.state.dias_da_semana.terca}
+                    onPress={()=>{this.handleCheckSelection("dias_da_semana","terca")}}
+                />
+
+                <CheckBox
+                    title='Quarta'
+                    checked={this.state.dias_da_semana.quarta}
+                    onPress={()=>{this.handleCheckSelection("dias_da_semana","quarta")}}
+                />
+
+                <CheckBox
+                    title='Quinta'
+                    checked={this.state.dias_da_semana.quinta}
+                    onPress={()=>{this.handleCheckSelection("dias_da_semana","quinta")}}
+                />
+
+                <CheckBox
+                    title='Sexta'
+                    checked={this.state.dias_da_semana.sexta}
+                    onPress={()=>{this.handleCheckSelection("dias_da_semana","sexta")}}
+                />
+
+                <CheckBox
+                    title='Sábado'
+                    checked={this.state.dias_da_semana.sabado}
+                    onPress={()=>{this.handleCheckSelection("dias_da_semana","sabado")}}
                 />
 
                 <Slider
