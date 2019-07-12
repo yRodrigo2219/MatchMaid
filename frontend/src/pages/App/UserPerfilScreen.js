@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { View, 
-    TextInput, 
-    Button,
-    Text } from 'react-native';
-import { CheckBox,
-    Slider } from 'react-native-elements';
+    Text, 
+    Button, 
+    TextInput } from 'react-native';
 
-export default class UserSignUp extends Component{
-    state = {
+
+export default class UserPerfilScreen extends Component{
+    state={ 
+        nome:'',
+        email:'',
+        
         dias_da_semana:{
             segunda: false,
             terca: false,
@@ -16,8 +18,7 @@ export default class UserSignUp extends Component{
             sexta: false,
             sabado: false,
             domingo: false
-        },
-        value: 0
+        }   
     }
 
     handleCheckSelection = (first, second) =>{
@@ -28,47 +29,29 @@ export default class UserSignUp extends Component{
             }
         }));
     }
-    
+
+    handleSignInAction = async () => {
+        await AsyncStorage.setItem('userToken', 'abc');
+        this.props.navigation.navigate('App');
+    }
+
     render(){
+
+        const nome = this.state.nome;
+        const email = this.state.email;
+
         return(
             <View>
+                
+                <Text>Perfil Usuário</Text>
+                
                 <TextInput
                     placeholder="Nome"
                 />
 
                 <TextInput
-                    placeholder="Sobrenome"
-                 />
-
-                <TextInput
-                    placeholder="Cidade"
-                />
-
-                <TextInput
-                    placeholder="Estado"
-                />
-
-                <TextInput
-                    placeholder="CEP"
-                />
-
-                <TextInput
-                    placeholder="Endereço"
-                />
-
-                <TextInput
                     placeholder="Email"
-                 />
-
-                <TextInput
-                    placeholder="CPF"
                 />
-
-                <TextInput
-                    placeholder="RG"
-                />
-
-                <Text> Dias da Semana</Text>
 
                 <CheckBox
                     title='Domingo'
@@ -112,13 +95,14 @@ export default class UserSignUp extends Component{
                     onPress={()=>{this.handleCheckSelection("dias_da_semana","sabado")}}
                 />
 
-                <Slider
-                    value={this.state.value}
-                    onValueChange={value => this.setState({ value })}
-                />
-                <Text>Value: {this.state.value}</Text>
                 <Button
-                    title="Sign Up"
+                    title="Salvar"
+                    onPress={this.handl}
+                />
+
+                <Button
+                    title="Sair"
+                    onPress={this.handleSignOut}
                 />
             </View>
         );

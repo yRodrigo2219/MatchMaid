@@ -29,25 +29,24 @@ export default class SignIn extends Component{
                 <TextInput
                     value={this.state.login}
                     onChangeText={this.handleLoginChange}
-                    placeholder="Login"
+                    placeholder="Email"
                 />
 
                 <TextInput
                     value={this.state.password}
                     onChangeText={this.handlePasswordChange}
-                    placeholder="Password"
+                    placeholder="Senha"
                 />
-                
+
                 <Button
-                    title="Sign In"
+                    title="Entrar"
                     onPress={this.handleSignInAction}
                 />
 
                 <Button
-                    title="Sign Up"
+                    title="Cadastrar"
                     onPress={()=>{this.props.navigation.navigate('SignUpScreen')}}
                 />
-
             </View>
         );
     }

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { View, 
-    TextInput, 
+    Text, 
     Button, 
-    Text} from 'react-native';
-import { CheckBox } from 'react-native-elements';
+    TextInput } from 'react-native';
 
-export default class MaidSignUp extends Component{
-    state = {
+
+export default class UserPerfilScreen extends Component{
+    state={ 
+        nome:'',
+        email:'',
+        
         dias_da_semana:{
             segunda: false,
             terca: false,
@@ -15,15 +18,7 @@ export default class MaidSignUp extends Component{
             sexta: false,
             sabado: false,
             domingo: false
-        },
-        servicos:{
-            baba: false,
-            limpar_casa: false,
-            lavar_louca: false,
-            lavar_roupa: false,
-            cuidar_casa: false,
-            cozinhar: false
-        },
+        }   
     }
 
     handleCheckSelection = (first, second) =>{
@@ -35,47 +30,28 @@ export default class MaidSignUp extends Component{
         }));
     }
 
+    handleSignInAction = async () => {
+        await AsyncStorage.setItem('userToken', 'abc');
+        this.props.navigation.navigate('App');
+    }
+
     render(){
+
+        const nome = this.state.nome;
+        const email = this.state.email;
+
         return(
             <View>
+                
+                <Text>Perfil Usuário</Text>
+                
                 <TextInput
-                    placeholder="Maid Sign Up"
                     placeholder="Nome"
                 />
 
                 <TextInput
-                    placeholder="Sobrenome"
-                 />
-
-                <TextInput
-                    placeholder="Cidade"
-                />
-
-                <TextInput
-                    placeholder="Estado"
-                />
-
-                <TextInput
-                    placeholder="CEP"
-                />
-
-                <TextInput
-                    placeholder="Endereço"
-                />
-
-                <TextInput
                     placeholder="Email"
-                 />
-
-                <TextInput
-                    placeholder="CPF"
                 />
-
-                <TextInput
-                    placeholder="RG"
-                />
-
-                <Text> Dias da Semana</Text>
 
                 <CheckBox
                     title='Domingo'
@@ -155,12 +131,53 @@ export default class MaidSignUp extends Component{
                     title='Cozinhar'
                     checked={this.state.servicos.cozinhar}
                     onPress={()=>{this.handleCheckSelection("servicos","cozinhar")}}
+                /><Text> Tipos de Trabalho</Text>
+
+                <CheckBox
+                    title='Babá'
+                    checked={this.state.servicos.baba}
+                    onPress={()=>{this.handleCheckSelection("servicos","baba")}}
+                />
+
+                <CheckBox
+                    title='Lavar Louça'
+                    checked={this.state.servicos.lavar_louca}
+                    onPress={()=>{this.handleCheckSelection("servicos","lavar_louca")}}
+                />
+
+                <CheckBox
+                    title='Lavar Roupa'
+                    checked={this.state.servicos.lavar_roupa}
+                    onPress={()=>{this.handleCheckSelection("servicos","lavar_roupa")}}
+                />
+
+                <CheckBox
+                    title='Cuidar da Casa'
+                    checked={this.state.servicos.cuidar_casa}
+                    onPress={()=>{this.handleCheckSelection("servicos","cuidar_casa")}}
+                />
+
+                <CheckBox
+                    title='Limpar Casa'
+                    checked={this.state.servicos.limpar_casa}
+                    onPress={()=>{this.handleCheckSelection("servicos","limpar_casa")}}
+                />
+
+                <CheckBox
+                    title='Cozinhar'
+                    checked={this.state.servicos.cozinhar}
+                    onPress={()=>{this.handleCheckSelection("servicos","cozinhar")}}
                 />
 
                 <Button
-                    title="Cadastrar"
+                    title="Salvar"
+                    onPress={this.handl}
                 />
 
+                <Button
+                    title="Sair"
+                    onPress={this.handleSignOut}
+                />
             </View>
         );
     }
