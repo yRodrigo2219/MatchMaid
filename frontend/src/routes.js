@@ -9,7 +9,7 @@ import MaidSignUp from "./pages/Auth/MaidSignUp"
 import AuthLoading from "./pages/Auth/AuthLoading"
 
 import MainAppScreen from './pages/App/MainApp'
-
+import SideBarScreen from './pages/App/Sidebar'
 const AuthNavigator = createStackNavigator({
     MainAuthScreen:{
         screen: MainAuth
@@ -28,6 +28,9 @@ const AuthNavigator = createStackNavigator({
 const AppNavigator = createStackNavigator({
     MainAppScreen:{
         screen: MainAppScreen
+    },
+    SideBarScreen:{
+        screen: SideBarScreen
     }
 });
 

@@ -8,13 +8,13 @@ export default class SignUp extends Component{
     render(){
         return(
             <View>
-                <Text>Sign up</Text>
+                <Text>Cadastro</Text>
                 <Button
-                    title="User"
+                    title="Usuário"
                     onPress={()=>{this.props.navigation.navigate("UserSignUpScreen")}}
                 />
                 <Button
-                    title="Maid"
+                    title="Empregada"
                     onPress={()=>{this.props.navigation.navigate("MaidSignUpScreen")}}
                 />
             </View>
