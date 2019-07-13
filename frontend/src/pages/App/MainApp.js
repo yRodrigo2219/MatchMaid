@@ -14,26 +14,27 @@ export default class MainApp extends Component{
         maidData: [],
         value: "",
         userInfo: {
-            lat: -16.15,
-            long: 81.55
+            lat: -0.002,
+            long: 0
         }
     }
 
     arrayHolder = [];
 
     handleSignOut = async ()=>{
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
+        await AsyncStorage.removeItem('userToken');
+        this.props.navigation.navigate('AuthLoading');
     }
 
     getMaidData = async () =>{
-        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}}];
+        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
         this.setState({maidData: data});
         this.arrayHolder = data;
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.getMaidData();
+        this.searchFilterFunction("");
     }
 
     renderDays = days =>{
@@ -71,7 +72,8 @@ export default class MainApp extends Component{
         return preco.toFixed(2);
     }
 
-    getDistance = (local) => {
+    getDistance = (item) => {
+        let local = item.localizacao;
         const R = 6371e3;
         const pi = Math.PI;
 
@@ -94,14 +96,10 @@ export default class MainApp extends Component{
 
         let d = R * c;
 
-        if(d > 1000){
-            d /= 1000;
-        }
-
+        d /= 1000;
         d = d.toFixed(2);
-        d = d>1000 ? d + " Km" : d + " m";
 
-        return d;
+        return d + " Km";
     }
 
     renderMaidList = ({item}) => (
@@ -112,7 +110,7 @@ export default class MainApp extends Component{
                 <View>
                     <Text>{item.name}</Text>
                     <Text>R$ {this.toFixedTwo(item.services.preco_hora)}</Text>
-                    <Text>{this.getDistance(item.localizacao)}</Text>
+                    <Text>{this.getDistance(item)}</Text>
                 </View>
             </View>
 
@@ -134,17 +132,50 @@ export default class MainApp extends Component{
         this.setState({
             value: text
         });
-        
-        const newData = this.arrayHolder.filter(item => {
-            var itemData = `${item.name.toUpperCase()}`;
-            itemData = RemoveAccents(itemData);
-            var textData = text.toUpperCase();
-            textData = RemoveAccents(textData);
-      
-            return itemData.indexOf(textData) > -1;
+
+        new Promise(async (resolve,rejecet)=>{
+            let filterObject = {
+                dias:{
+                    segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')),
+                    terca: JSON.parse(await AsyncStorage.getItem('tercaFilter')),
+                    quarta: JSON.parse(await AsyncStorage.getItem('quartaFilter')),
+                    quinta: JSON.parse(await AsyncStorage.getItem('quintaFilter')),
+                    sexta: JSON.parse(await AsyncStorage.getItem('sextaFilter')),
+                    sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')),
+                    domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter'))
+                },
+                distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter'))
+            };
+            
+            resolve(filterObject);
+
+        }).then((filterObject)=>{
+            const newData = this.arrayHolder.filter(item => {
+                let keyDays = Object.keys(filterObject.dias);
+
+                let itemData = `${item.name.toUpperCase()}`;
+                itemData = RemoveAccents(itemData);
+                let textData = text.toUpperCase();
+                textData = RemoveAccents(textData);
+    
+                if( itemData.indexOf(textData) > -1 ){
+                    for(let i = 0; i < keyDays.length; i++){
+                        if(filterObject.dias[keyDays[i]]){
+                            if(item.days[keyDays[i]] !== true) return false;
+                        }
+                    }
+
+                    if(filterObject.distance < item.dist) return false;
+
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+
+            this.setState({ maidData: newData });
         });
-        
-        this.setState({ maidData: newData });
+
     };
 
     render(){
@@ -165,8 +196,13 @@ export default class MainApp extends Component{
                 />
 
                 <Button
-                    title='Filter'
+                    title='Filter Config'
                     onPress={() => this.props.navigation.toggleDrawer()}
+                />
+
+                <Button
+                    title='Filter'
+                    onPress={() => this.searchFilterFunction(this.state.value)}
                 />
 
                 <Button
