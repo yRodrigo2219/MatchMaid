@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, 
+import { ScrollView, 
     TextInput, 
     Button,
     Text } from 'react-native';
@@ -37,7 +37,7 @@ export default class MaidSignUp extends Component{
 
     render(){
         return(
-            <View>
+            <ScrollView>
                 <TextInput
                     placeholder="Nome"
                 />
@@ -160,7 +160,7 @@ export default class MaidSignUp extends Component{
                     title="Cadastrar"
                 />
 
-            </View>
+            </ScrollView>
         );
     }
 }

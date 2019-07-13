@@ -27,8 +27,6 @@ export default class Tab extends Component{
             this.setState({long: "Granted"});
         }
 
-        await Location.getProviderStatusAsync().then(console.warn);
-        await Location.enableNetworkProviderAsync().then(console.warn).catch(console.warn);
         let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
         this.setState({lat: JSON.stringify(location)});
     }
