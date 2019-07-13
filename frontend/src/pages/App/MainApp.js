@@ -12,7 +12,11 @@ export default class MainApp extends Component{
     state = {
         drawer: false,
         maidData: [],
-        value: ""
+        value: "",
+        userInfo: {
+            lat: -16.15,
+            long: 81.55
+        }
     }
 
     arrayHolder = [];
@@ -23,7 +27,7 @@ export default class MainApp extends Component{
     }
 
     getMaidData = async () =>{
-        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true,}},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true} }];
+        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}}];
         this.setState({maidData: data});
         this.arrayHolder = data;
     }
@@ -67,6 +71,39 @@ export default class MainApp extends Component{
         return preco.toFixed(2);
     }
 
+    getDistance = (local) => {
+        const R = 6371e3;
+        const pi = Math.PI;
+
+        let lat1 = this.state.userInfo.lat;
+        let long1 = this.state.userInfo.long;
+
+        let lat2 = local.latitude;
+        let long2 = local.longitude;
+
+        let φ1 = lat1 * (pi/180);
+        let φ2 = lat2 * (pi/180);
+        let Δφ = (lat2-lat1) * (pi/180);
+        let Δλ = (long2-long1) * (pi/180);
+
+        let a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        let d = R * c;
+
+        if(d > 1000){
+            d /= 1000;
+        }
+
+        d = d.toFixed(2);
+        d = d>1000 ? d + " Km" : d + " m";
+
+        return d;
+    }
+
     renderMaidList = ({item}) => (
         <View style={{marginTop:10, marginHorizontal:5}}>
             <View>
@@ -75,6 +112,7 @@ export default class MainApp extends Component{
                 <View>
                     <Text>{item.name}</Text>
                     <Text>R$ {this.toFixedTwo(item.services.preco_hora)}</Text>
+                    <Text>{this.getDistance(item.localizacao)}</Text>
                 </View>
             </View>
 

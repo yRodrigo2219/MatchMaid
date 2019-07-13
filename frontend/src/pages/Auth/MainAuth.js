@@ -19,8 +19,8 @@ export default class SignIn extends Component{
     }
 
     handleSignInAction = async () => {
-        await AsyncStorage.setItem('userToken', 'abc');
-        this.props.navigation.navigate('App');
+        await AsyncStorage.setItem('userToken', "true");
+        this.props.navigation.navigate('AuthLoading');
     }
 
     render(){

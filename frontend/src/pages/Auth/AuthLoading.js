@@ -12,7 +12,11 @@ export default class AuthLoading extends Component{
     _bootstrapAsync = async () => {
         const userToken = await AsyncStorage.getItem('userToken');
 
-        this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+        if(userToken === "true"){
+            this.props.navigation.navigate('App');
+        }else{
+            this.props.navigation.navigate('Auth');
+        }
     }
 
     render(){
