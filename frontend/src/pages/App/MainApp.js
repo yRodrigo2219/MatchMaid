@@ -131,15 +131,15 @@ export default class MainApp extends Component{
         new Promise(async (resolve,rejecet)=>{
             let filterObject = {
                 dias:{
-                    segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')),
-                    terca: JSON.parse(await AsyncStorage.getItem('tercaFilter')),
-                    quarta: JSON.parse(await AsyncStorage.getItem('quartaFilter')),
-                    quinta: JSON.parse(await AsyncStorage.getItem('quintaFilter')),
-                    sexta: JSON.parse(await AsyncStorage.getItem('sextaFilter')),
-                    sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')),
-                    domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter'))
+                    segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')) || false,
+                    terca: JSON.parse(await AsyncStorage.getItem('tercaFilter')) || false,
+                    quarta: JSON.parse(await AsyncStorage.getItem('quartaFilter')) || false,
+                    quinta: JSON.parse(await AsyncStorage.getItem('quintaFilter')) || false,
+                    sexta: JSON.parse(await AsyncStorage.getItem('sextaFilter')) || false,
+                    sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')) || false, 
+                    domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter')) || false
                 },
-                distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter'))
+                distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1
             };
             
             resolve(filterObject);
