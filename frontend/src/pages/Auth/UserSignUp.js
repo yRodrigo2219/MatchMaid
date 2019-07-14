@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { ScrollView, 
     TextInput, 
     Button,
-    Text } from 'react-native';
+    Text,
+    Image } from 'react-native';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 
 export default class UserSignUp extends Component{
@@ -13,7 +16,7 @@ export default class UserSignUp extends Component{
             email: "",
             senha: "",
             confSenha: "",
-            imagem: "",
+            imagem: null,
             idade: "",
             rg: "",
             cpf: ""
@@ -126,6 +129,24 @@ export default class UserSignUp extends Component{
         }
     }
 
+    requestLocalizationPermission = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if(status !== "granted"){
+            console.warn('Denied!');
+        }else{
+            console.warn('Granted!');
+        }
+
+        let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+        this.setState(prevState => ({
+            localizacao:{
+                ...prevState.localizacao,
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude
+            }
+        }));
+    }
+
     render(){
         return(
             <ScrollView>
@@ -151,12 +172,14 @@ export default class UserSignUp extends Component{
                     placeholder="Senha"
                     value={this.state.userinfo.senha}
                     onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'senha')}
+                    secureTextEntry={true}
                 />
 
                 <TextInput
                     placeholder="Confirmar Senha"
                     value={this.state.userinfo.confSenha}
                     onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'confSenha')}
+                    secureTextEntry={true}
                 />
 
                 <TextInput
@@ -201,10 +224,12 @@ export default class UserSignUp extends Component{
                     onChangeText={(text) => this.validateInput(text, 'endereco', 'localizacao', 'endereco')}
                 />
 
+                <Button title="Get Pos" onPress={this.requestLocalizationPermission}/>
+
                 <Button
                     title="Sign Up"
                 />
-
+            
             </ScrollView>
         );
     }

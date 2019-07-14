@@ -21,11 +21,6 @@ export default class MainApp extends Component{
 
     arrayHolder = [];
 
-    handleSignOut = async ()=>{
-        await AsyncStorage.removeItem('userToken');
-        this.props.navigation.navigate('AuthLoading');
-    }
-
     getMaidData = async () =>{
         let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
         this.setState({maidData: data});
@@ -188,11 +183,6 @@ export default class MainApp extends Component{
                     onChangeText={text => this.searchFilterFunction(text)}
                     autoCorrect={false}
                     value={this.state.value}      
-                />
-
-                <Button
-                    title="Sign Out"
-                    onPress={this.handleSignOut}
                 />
 
                 <Button

@@ -12,11 +12,11 @@ import AuthLoading from "./pages/Auth/AuthLoading";
 
 import MainApp from './pages/App/MainApp';
 import FilterMenu from './pages/App/FilterMenu';
-import Tab from './pages/App/Tab';
+import ConfigTab from './pages/App/ConfigTab';
 
 const AuthNavigator = createStackNavigator({
     MainAuthScreen:{
-        screen: UserSignUp
+        screen: MainAuth
     },
     SignUpScreen:{
         screen: SignUp
@@ -43,8 +43,8 @@ const AppNavigator = createMaterialTopTabNavigator({
     MainAppScreen:{
         screen: FilterNavigator
     },
-    TabScreen:{
-        screen: Tab
+    ConfigTabScreen:{
+        screen: ConfigTab
     }
 })
 
