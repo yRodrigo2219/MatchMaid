@@ -3,31 +3,127 @@ import { ScrollView,
     TextInput, 
     Button,
     Text } from 'react-native';
-import { CheckBox,
-    Slider } from 'react-native-elements';
 
 
 export default class UserSignUp extends Component{
     state = {
-        dias_da_semana:{
-            segunda: false,
-            terca: false,
-            quarta: false,
-            quinta: false,
-            sexta: false,
-            sabado: false,
-            domingo: false
+        userinfo:{
+            nome: "",
+            celular: "",
+            email: "",
+            senha: "",
+            confSenha: "",
+            imagem: "",
+            idade: "",
+            rg: "",
+            cpf: ""
         },
-        value : 0
+        localizacao:{
+            estado: "",
+            cidade: "",
+            cep: "",
+            endereco: "",
+            latitude: 0.0,
+            longitude: 0.0
+        }
     }
 
-    handleCheckSelection = (first, second) =>{
-        this.setState(prevState => ({
-            [`${first}`]:{
-                ...prevState[`${first}`],
-                [`${second}`]: !prevState[`${first}`][`${second}`]
+    colorValidation = {
+        email: false,
+        senha: false,
+        cpf: false
+    }
+
+    toTitleCase = (str) => {
+        return str.replace(/\w\S*/g, (txt)=>{
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    validateInput = (input, type, first, second) => {
+        const filterChars = /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/;
+        const fitlerNumbers = /^[0-9]+$/;
+        const filterCharsNumbers = /^([0-9A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/;
+        const filterEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
+        if(type === 'chars'){
+            if((filterChars.test(input)|| input === "") && input.length <= 18){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: this.toTitleCase(input).replace(/\s\s+/g, ' ')
+                    }
+                }));
             }
-        }));
+        }else if(type === 'age'){
+            if((fitlerNumbers.test(input) || input === "") && input.length <= 2){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: input
+                    }
+                }));
+            }
+        }else if(type === 'email'){
+            if(input.length <= 40){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: input
+                    }
+                }));
+
+                (filterEmail.test(input) && input !== "") ? this.colorValidation.email = true : this.colorValidation.email = false;
+            }
+        }else if(type === 'password'){
+            if(input.length <= 20){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: input
+                    }
+                }), ()=>{
+                    (this.state.userinfo.senha === this.state.userinfo.confSenha && this.state.userinfo.senha.length >=8) ? this.colorValidation.senha = true : this.colorValidation.senha = false;
+                });
+            }
+        }else if(type === 'CEP'){
+            if((fitlerNumbers.test(input) || input === "") && input.length <= 8){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: input
+                    }
+                }));
+            }
+        }else if(type === 'endereco'){
+            if((filterCharsNumbers.test(input)|| input === "") && input.length <= 45){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: this.toTitleCase(input).replace(/\s\s+/g, ' ')
+                    }
+                }));
+            }
+        }else if(type === 'CPF'){
+            if((fitlerNumbers.test(input) || input === "") && input.length <= 11){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: input
+                    }
+                }));
+            }
+        }else if(type === 'RG'){
+            if((fitlerNumbers.test(input) || input === "") && input.length <= 13){
+                this.setState(prevState => ({
+                    [`${first}`]:{
+                        ...prevState[`${first}`],
+                        [`${second}`]: input
+                    }
+                }));
+            }
+        }
     }
 
     render(){
@@ -35,89 +131,75 @@ export default class UserSignUp extends Component{
             <ScrollView>
                 <TextInput
                     placeholder="Nome"
+                    value={this.state.userinfo.nome}
+                    onChangeText={(text) => this.validateInput(text, 'chars', 'userinfo', 'nome')}
                 />
 
                 <TextInput
                     placeholder="Sobrenome"
-                 />
-
-                <TextInput
-                    placeholder="Cidade"
-                />
-
-                <TextInput
-                    placeholder="Estado"
-                />
-
-                <TextInput
-                    placeholder="CEP"
-                />
-                
-                <TextInput
-                    placeholder="Endereço"
+                    value={this.state.userinfo.sobrenome}
+                    onChangeText={(text) => this.validateInput(text, 'chars', 'userinfo', 'sobrenome')}
                 />
 
                 <TextInput
                     placeholder="Email"
+                    value={this.state.userinfo.email}
+                    onChangeText={(text) => this.validateInput(text, 'email', 'userinfo', 'email')}
                  />
 
                 <TextInput
+                    placeholder="Senha"
+                    value={this.state.userinfo.senha}
+                    onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'senha')}
+                />
+
+                <TextInput
+                    placeholder="Confirmar Senha"
+                    value={this.state.userinfo.confSenha}
+                    onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'confSenha')}
+                />
+
+                <TextInput
+                    placeholder="Idade"
+                    value={this.state.userinfo.idade}
+                    onChangeText={(text) => this.validateInput(text, 'age', 'userinfo', 'idade')}
+                />
+
+                <TextInput
                     placeholder="CPF"
+                    value={this.state.userinfo.cpf}
+                    onChangeText={(text) => this.validateInput(text, 'CPF', 'userinfo', 'cpf')}
                 />
 
                 <TextInput
                     placeholder="RG"
+                    value={this.state.userinfo.rg}
+                    onChangeText={(text) => this.validateInput(text, 'RG', 'userinfo', 'rg')}
                 />
 
-                <Text> Dias da Semana</Text>
-
-                <CheckBox
-                    title='Domingo'
-                    checked={this.state.dias_da_semana.domingo}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","domingo")}}
+                <TextInput
+                    placeholder="Cidade"
+                    value={this.state.localizacao.cidade}
+                    onChangeText={(text) => this.validateInput(text, 'chars', 'localizacao', 'cidade')}
                 />
 
-                <CheckBox
-                    title='Segunda'
-                    checked={this.state.dias_da_semana.segunda}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","segunda")}}
+                <TextInput
+                    placeholder="Estado"
+                    value={this.state.localizacao.estado}
+                    onChangeText={(text) => this.validateInput(text, 'chars', 'localizacao', 'estado')}
                 />
 
-                <CheckBox
-                    title='Terça'
-                    checked={this.state.dias_da_semana.terca}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","terca")}}
+                <TextInput
+                    placeholder="CEP"
+                    value={this.state.localizacao.cep}
+                    onChangeText={(text) => this.validateInput(text, 'CEP', 'localizacao', 'cep')}
                 />
-
-                <CheckBox
-                    title='Quarta'
-                    checked={this.state.dias_da_semana.quarta}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","quarta")}}
+                
+                <TextInput
+                    placeholder="Endereço"
+                    value={this.state.localizacao.endereco}
+                    onChangeText={(text) => this.validateInput(text, 'endereco', 'localizacao', 'endereco')}
                 />
-
-                <CheckBox
-                    title='Quinta'
-                    checked={this.state.dias_da_semana.quinta}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","quinta")}}
-                />
-
-                <CheckBox
-                    title='Sexta'
-                    checked={this.state.dias_da_semana.sexta}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","sexta")}}
-                />
-
-                <CheckBox
-                    title='Sábado'
-                    checked={this.state.dias_da_semana.sabado}
-                    onPress={()=>{this.handleCheckSelection("dias_da_semana","sabado")}}
-                />
-
-                <Slider
-                    value={this.state.value}
-                    onValueChange={value => this.setState({ value })}
-                />
-                <Text>Value: {this.state.value}</Text>
 
                 <Button
                     title="Sign Up"

@@ -16,7 +16,7 @@ import Tab from './pages/App/Tab';
 
 const AuthNavigator = createStackNavigator({
     MainAuthScreen:{
-        screen: MainAuth
+        screen: UserSignUp
     },
     SignUpScreen:{
         screen: SignUp
