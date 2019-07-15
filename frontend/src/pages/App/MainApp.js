@@ -5,7 +5,8 @@ import { View,
     AsyncStorage,
     FlatList,
     TouchableOpacity,
-    Image } from 'react-native';
+    Image,
+    ActivityIndicator } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { SearchBar } from 'react-native-elements';
 import RemoveAccents from 'remove-accents';
@@ -20,7 +21,12 @@ export default class MainApp extends Component{
         userInfo: {
             lat: -0.002,
             long: 0
-        }
+        },
+        isLoading: false
+    }
+
+    filterObject = {
+        
     }
 
     arrayHolder = [];
@@ -32,6 +38,19 @@ export default class MainApp extends Component{
     }
 
     async componentDidMount(){
+        this.filterObject = {
+            dias:{
+                segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')) || false,
+                terca: JSON.parse(await AsyncStorage.getItem('tercaFilter')) || false,
+                quarta: JSON.parse(await AsyncStorage.getItem('quartaFilter')) || false,
+                quinta: JSON.parse(await AsyncStorage.getItem('quintaFilter')) || false,
+                sexta: JSON.parse(await AsyncStorage.getItem('sextaFilter')) || false,
+                sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')) || false, 
+                domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter')) || false
+            },
+            distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1
+        }
+
         await this.getMaidData();
         this.searchFilterFunction(this.state.value);
         this.isDrawerClosed();
@@ -40,6 +59,18 @@ export default class MainApp extends Component{
     isDrawerClosed = () => {
         setInterval(async ()=>{
             if(await AsyncStorage.getItem('DrawerState') === "Closed"){
+                this.filterObject = {
+                    dias:{
+                        segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')) || false,
+                        terca: JSON.parse(await AsyncStorage.getItem('tercaFilter')) || false,
+                        quarta: JSON.parse(await AsyncStorage.getItem('quartaFilter')) || false,
+                        quinta: JSON.parse(await AsyncStorage.getItem('quintaFilter')) || false,
+                        sexta: JSON.parse(await AsyncStorage.getItem('sextaFilter')) || false,
+                        sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')) || false, 
+                        domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter')) || false
+                    },
+                    distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1
+                }
                 this.searchFilterFunction(this.state.value);
                 await AsyncStorage.setItem('DrawerState', "");
             }
@@ -53,7 +84,7 @@ export default class MainApp extends Component{
         for(let i=0; i < key.length; i++){
             if(days[key[i]]){
                 let str = key[i].charAt(0).toUpperCase() + key[i].slice(1);
-                arr.push(<Text key={i}>{"* " + str}</Text>);
+                arr.push(<Text key={i}>{"✓ " + str}</Text>);
             }
         }
         return arr;
@@ -68,7 +99,7 @@ export default class MainApp extends Component{
                 let str = key[i].charAt(0).toUpperCase() + key[i].slice(1);
                 str = str.replace(/_/g, " ");
                 if(str === "Baba") str = "Babá";
-                arr.push(<Text key={i}>{"* " + str}</Text>);
+                arr.push(<Text key={i}>{"✓ " + str}</Text>);
             }
         }
         return arr;
@@ -112,14 +143,21 @@ export default class MainApp extends Component{
     }
 
     renderMaidList = ({item}) => (
-        <View style={{marginTop:10, marginHorizontal:5}}>
-            <View>
-                <Text>Image Here</Text>
+        <View style={Style.maidProfile}>
+            <View style={Style.perfil}>
+                <Image style={Style.perfilImage} source={require('../../img/userImg.png')}/>
 
-                <View>
-                    <Text>{item.name}</Text>
-                    <Text>R$ {this.toFixedTwo(item.services.preco_hora)}</Text>
-                    <Text>{this.getDistance(item)}</Text>
+                <View style={{flex:1}}>
+                    <Text style={Style.namePerfil}>{item.name}</Text>
+                    <View style={Style.subPerfil}>
+                        <View>
+                            <Text style={Style.valuePerfil}>R$ ~{this.toFixedTwo(item.services.preco_hora)}</Text>
+                            <Text style={Style.distancePerfil}>{this.getDistance(item)}</Text>
+                        </View>
+                        <TouchableOpacity>
+                            <Image style={Style.wppImage} source={require('../../img/wppIcon.png')}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
 
@@ -142,62 +180,46 @@ export default class MainApp extends Component{
             value: text
         });
 
-        new Promise(async (resolve,rejecet)=>{
-            let filterObject = {
-                dias:{
-                    segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')) || false,
-                    terca: JSON.parse(await AsyncStorage.getItem('tercaFilter')) || false,
-                    quarta: JSON.parse(await AsyncStorage.getItem('quartaFilter')) || false,
-                    quinta: JSON.parse(await AsyncStorage.getItem('quintaFilter')) || false,
-                    sexta: JSON.parse(await AsyncStorage.getItem('sextaFilter')) || false,
-                    sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')) || false, 
-                    domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter')) || false
-                },
-                distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1
-            };
-            
-            resolve(filterObject);
+        
+        const newData = this.arrayHolder.filter(item => {
+            let keyDays = Object.keys(this.filterObject.dias);
 
-        }).then((filterObject)=>{
-            const newData = this.arrayHolder.filter(item => {
-                let keyDays = Object.keys(filterObject.dias);
+            let itemData = `${item.name.toUpperCase()}`;
+            itemData = RemoveAccents(itemData);
+            let textData = text.toUpperCase();
+            textData = RemoveAccents(textData);
 
-                let itemData = `${item.name.toUpperCase()}`;
-                itemData = RemoveAccents(itemData);
-                let textData = text.toUpperCase();
-                textData = RemoveAccents(textData);
-    
-                if( itemData.indexOf(textData) > -1 ){
-                    for(let i = 0; i < keyDays.length; i++){
-                        if(filterObject.dias[keyDays[i]]){
-                            if(item.days[keyDays[i]] !== true) return false;
-                        }
+            if( itemData.indexOf(textData) > -1 ){
+                for(let i = 0; i < keyDays.length; i++){
+                    if(this.filterObject.dias[keyDays[i]]){
+                        if(item.days[keyDays[i]] !== true) return false;
                     }
-
-                    if(filterObject.distance < item.dist) return false;
-
-                    return true;
-                }else{
-                    return false;
                 }
-            });
 
-            this.setState({ maidData: newData });
+                if(this.filterObject.distance < item.dist) return false;
+
+                return true;
+            }else{
+                return false;
+            }
         });
 
+        this.setState({ maidData: newData });
     }
 
     renderHeader = ()=>{
         return(
-            <View>
-                <SearchBar        
-                    placeholder="Type Here..."        
-                    lightTheme        
-                    round        
-                    onChangeText={text => this.searchFilterFunction(text)}
-                    autoCorrect={false}
-                    value={this.state.value}      
-                />
+            <View style={Style.filterView}>
+                <View style={Style.filterSearch}>
+                    <SearchBar        
+                        placeholder="Digite o nome aqui"        
+                        lightTheme        
+                        round        
+                        onChangeText={text => this.searchFilterFunction(text)}
+                        autoCorrect={false}
+                        value={this.state.value}
+                    />
+                </View>
 
 
                 <TouchableOpacity
@@ -209,6 +231,22 @@ export default class MainApp extends Component{
         );
     }
 
+    renderFooter = () =>{
+        if(!this.state.isLoading) return null;
+
+        return (
+            <View
+              style={{
+                paddingVertical: 20,
+                borderTopWidth: 1,
+                borderColor: "#CED0CE"
+              }}
+            >
+              <ActivityIndicator animating size="large" />
+            </View>
+          );
+    }
+
     render(){
         return(
             <View>
@@ -217,13 +255,16 @@ export default class MainApp extends Component{
                     data={this.state.maidData}
                     renderItem={this.renderMaidList}
                     keyExtractor={item => item.name}
-                    ListHeaderComponent={this.renderHeader}/>
-                
-                <TouchableOpacity
-                    style={Style.toTopButton}
-                    onPress={() => this.refs.listRef.scrollToOffset({x: 0, y: 0, animated: true})}>
-                        <Image style={Style.toTopImage} source={require("../../img/backToTop.png")}/>
-                </TouchableOpacity>
+                    ListHeaderComponent={this.renderHeader}
+                    ListFooterComponent={this.renderFooter}/>
+                {
+                    this.state.maidData.length > 3 
+                    ? <TouchableOpacity
+                        style={Style.toTopButton}
+                        onPress={() => this.refs.listRef.scrollToOffset({x: 0, y: 0, animated: true})}>
+                            <Image style={Style.toTopImage} source={require("../../img/backToTop.png")}/>
+                    </TouchableOpacity> : null
+                }
             </View>
         );
     }
