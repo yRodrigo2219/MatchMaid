@@ -20,8 +20,6 @@ const defaultGetStateForAction = FilterNavigator.router.getStateForAction;
 FilterNavigator.router.getStateForAction = (action, state) => {
     if (action.willShow === false) { //action.type === "Navigation/DRAWER_CLOSED"
         AsyncStorage.setItem('DrawerState', "Closed");
-    }else if(action.willShow === true){
-        AsyncStorage.setItem('DrawerState', "Opened");
     }
     return defaultGetStateForAction(action, state);
 };

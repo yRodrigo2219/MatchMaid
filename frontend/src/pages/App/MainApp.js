@@ -3,10 +3,14 @@ import { View,
     Text, 
     Button,
     AsyncStorage,
-    FlatList } from 'react-native';
+    FlatList,
+    TouchableOpacity,
+    Image } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { SearchBar } from 'react-native-elements';
 import RemoveAccents from 'remove-accents';
+
+import Style from './Styles/MainStyle';
 
 export default class MainApp extends Component{
     state = {
@@ -22,7 +26,7 @@ export default class MainApp extends Component{
     arrayHolder = [];
 
     getMaidData = async () =>{
-        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
+        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5},{name: "Astrogildo", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Arnaldo", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
         this.setState({maidData: data});
         this.arrayHolder = data;
     }
@@ -183,7 +187,7 @@ export default class MainApp extends Component{
 
     }
 
-    render(){
+    renderHeader = ()=>{
         return(
             <View>
                 <SearchBar        
@@ -195,22 +199,31 @@ export default class MainApp extends Component{
                     value={this.state.value}      
                 />
 
-                <Button
-                    title='Filter Config'
+
+                <TouchableOpacity
                     onPress={() => this.props.navigation.toggleDrawer()}
-                />
+                    style={Style.filterButton}>
+                        <Image style={Style.filterImage} source={require("../../img/filterFilter.png")}/>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 
-                <Button
-                    title="^"
-                    onPress={() => this.refs.listRef.scrollToOffset({x: 0, y: 0, animated: true})}
-                />
-
+    render(){
+        return(
+            <View>
                 <FlatList
                     ref="listRef"
                     data={this.state.maidData}
                     renderItem={this.renderMaidList}
-                    keyExtractor={item => item.name}/>
-
+                    keyExtractor={item => item.name}
+                    ListHeaderComponent={this.renderHeader}/>
+                
+                <TouchableOpacity
+                    style={Style.toTopButton}
+                    onPress={() => this.refs.listRef.scrollToOffset({x: 0, y: 0, animated: true})}>
+                        <Image style={Style.toTopImage} source={require("../../img/backToTop.png")}/>
+                </TouchableOpacity>
             </View>
         );
     }

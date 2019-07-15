@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, AsyncStorage, Image } from 'react-native';
+import { View, Text, Button, AsyncStorage, Image, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
@@ -20,16 +20,18 @@ export default class ConfigTab extends Component{
     requestLocalizationPermission = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if(status !== "granted"){
-            console.warn('Denied!');
+            alert("Por favor nos de permissão para acessar sua localização!");
         }else{
-            console.warn('Granted!');
-        }
+            let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+            this.setState({
+                lat: location.coords.latitude,
+                long: location.coords.longitude
+            });
 
-        let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
-        this.setState({
-            lat: location.coords.latitude,
-            long: location.coords.longitude
-        });
+            await AsyncStorage.setItem("UserLatitude", (location.coords.latitude).toFixed(4).toString());
+            await AsyncStorage.setItem("UserLongitude", (location.coords.longitude).toFixed(4).toString());
+            Alert.alert("Localização",`Latitude: ${location.coords.latitude} Longitude: ${location.coords.longitude}`);
+        }
     }
 
     requestImagePicker = async () =>{
