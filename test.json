@@ -15,5 +15,23 @@
         "endereco": "Edsauidsai Wdusaid 157",
         "latitude": -18,
         "longitude": 65
+    },
+    "servicos":{
+        "preco_hora": 12,
+        "baba": false,
+        "limpar_casa": true,
+        "lavar_louca": false,
+        "lavar_roupa": false,
+        "cuidar_casa": false,
+        "cozinhar": false
+    },
+    "dias_disponiveis":{
+        "segunda": false,
+        "terca": false,
+        "quarta": false,
+        "quinta": true,
+        "sexta": false,
+        "sabado": false,
+        "domingo": false
     }
 }

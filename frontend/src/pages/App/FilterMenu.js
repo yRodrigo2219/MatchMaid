@@ -86,6 +86,10 @@ export default class FilterMenu extends Component{
                 <Slider
                     value={this.state.distance}
                     onValueChange={(value) => this.handleSliderChange("distance", value)}
+                    maximumValue={100}
+                    minimumValue={1}
+                    step={0.25}
+                    thumbTintColor={"#0000ff"}
                 />
                 <Text>Value: {this.state.distance}</Text>
                 

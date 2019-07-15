@@ -28,8 +28,18 @@ export default class MainApp extends Component{
     }
 
     async componentDidMount(){
-        this.getMaidData();
-        this.searchFilterFunction("");
+        await this.getMaidData();
+        this.searchFilterFunction(this.state.value);
+        this.isDrawerClosed();
+    }
+
+    isDrawerClosed = () => {
+        setInterval(async ()=>{
+            if(await AsyncStorage.getItem('DrawerState') === "Closed"){
+                this.searchFilterFunction(this.state.value);
+                await AsyncStorage.setItem('DrawerState', "");
+            }
+        }, 1000);
     }
 
     renderDays = days =>{
@@ -171,7 +181,7 @@ export default class MainApp extends Component{
             this.setState({ maidData: newData });
         });
 
-    };
+    }
 
     render(){
         return(
@@ -188,11 +198,6 @@ export default class MainApp extends Component{
                 <Button
                     title='Filter Config'
                     onPress={() => this.props.navigation.toggleDrawer()}
-                />
-
-                <Button
-                    title='Filter'
-                    onPress={() => this.searchFilterFunction(this.state.value)}
                 />
 
                 <Button

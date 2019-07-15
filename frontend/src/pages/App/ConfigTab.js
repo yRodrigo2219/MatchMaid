@@ -8,7 +8,8 @@ export default class ConfigTab extends Component{
     state = {
         imagem: null,
         lat: 0,
-        long: 0
+        long: 0,
+        userType: 'User'
     }
 
     handleSignOut = async ()=>{
@@ -45,6 +46,12 @@ export default class ConfigTab extends Component{
         });
     }
 
+    async componentDidMount(){
+        this.setState({
+            userType: await AsyncStorage.getItem('userType') || "User"
+        });
+    }
+
     render(){
         return(
             <View>
@@ -56,9 +63,12 @@ export default class ConfigTab extends Component{
                     title="Get Pos" 
                     onPress={this.requestLocalizationPermission}/>
                 
-                <Button 
-                    title="Get Img" 
-                    onPress={this.requestImagePicker}/>
+                {
+                    this.state.userType === "Maid" 
+                    ? <Button 
+                        title="Get Img" 
+                        onPress={this.requestImagePicker}/> : null
+                }
 
                 {
                     this.state.imagem 
