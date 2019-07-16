@@ -6,7 +6,8 @@ import { View,
     FlatList,
     TouchableOpacity,
     Image,
-    ActivityIndicator } from 'react-native';
+    ActivityIndicator,
+    Linking } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { SearchBar } from 'react-native-elements';
 import RemoveAccents from 'remove-accents';
@@ -32,7 +33,7 @@ export default class MainApp extends Component{
     arrayHolder = [];
 
     getMaidData = async () =>{
-        let data = [{name: "João", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5},{name: "Astrogildo", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Arnaldo", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
+        let data = [{name: "João", value: 25.20,celular:981445555, days:{domingo:true, segunda:true,terca:true,quarta:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5},{name: "Astrogildo", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Arnaldo", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
         this.setState({maidData: data});
         this.arrayHolder = data;
     }
@@ -154,7 +155,8 @@ export default class MainApp extends Component{
                             <Text style={Style.valuePerfil}>R$ ~{this.toFixedTwo(item.services.preco_hora)}</Text>
                             <Text style={Style.distancePerfil}>{this.getDistance(item)}</Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.shareToWhatsAppWithContact(item.celular)}>
                             <Image style={Style.wppImage} source={require('../../img/wppIcon.png')}/>
                         </TouchableOpacity>
                     </View>
@@ -207,6 +209,10 @@ export default class MainApp extends Component{
         this.setState({ maidData: newData });
     }
 
+    shareToWhatsAppWithContact = (phone) => {
+        Linking.openURL(`whatsapp://send?text="Eu cheguei a você pelo App MatchMaid!"&phone=${phone}`);
+    }
+
     renderHeader = ()=>{
         return(
             <View style={Style.filterView}>
@@ -218,6 +224,8 @@ export default class MainApp extends Component{
                         onChangeText={text => this.searchFilterFunction(text)}
                         autoCorrect={false}
                         value={this.state.value}
+                        containerStyle={{backgroundColor: 'transparent',borderBottomColor: 'transparent'}}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
                     />
                 </View>
 

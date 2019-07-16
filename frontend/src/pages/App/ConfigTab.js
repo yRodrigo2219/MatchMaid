@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, Button, AsyncStorage, Image, Alert } from 'react-native';
+import { View,
+    Text,
+    Button,
+    AsyncStorage,
+    Image,
+    Alert,
+    TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+
+import GStyles from '../GlobalStyle'
 
 export default class ConfigTab extends Component{
     state = {
@@ -56,14 +64,18 @@ export default class ConfigTab extends Component{
 
     render(){
         return(
-            <View>
-                <Button
-                    title="Sign Out"
-                    onPress={this.handleSignOut}/>
+            <View style = {[GStyles.alinhamentoSemMargem]}>
+                <TouchableOpacity
+                    style = { [GStyles.buttonGlobal] }
+                    onPress={this.requestLocalizationPermission}>
+                        <Text>Conseguir Localização</Text>
+                </TouchableOpacity>
 
-                <Button 
-                    title="Get Pos" 
-                    onPress={this.requestLocalizationPermission}/>
+                <TouchableOpacity
+                    style = { [GStyles.buttonGlobal] }                       
+                    onPress={this.handleSignOut}>
+                        <Text>Sair</Text>
+                </TouchableOpacity>
                 
                 {
                     this.state.userType === "Maid" 

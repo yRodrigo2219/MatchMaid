@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { ScrollView, 
     TextInput, 
-    Button,
     Text,
-    Image } from 'react-native';
+    TouchableOpacity,
+    View} from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
+import GStyles from '../GlobalStyle';
+import UserStyles from '../Auth/Styles/UserSignUpStyles';
 
 export default class UserSignUp extends Component{
     state = {
@@ -149,87 +151,119 @@ export default class UserSignUp extends Component{
 
     render(){
         return(
-            <ScrollView>
-                <TextInput
-                    placeholder="Nome"
-                    value={this.state.userinfo.nome}
-                    onChangeText={(text) => this.validateInput(text, 'chars', 'userinfo', 'nome')}
-                />
+            <ScrollView >
+                <View style = {[UserStyles.alinhamento]}>
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Nome"
+                        value={this.state.userinfo.nome}
+                        onChangeText={(text) => this.validateInput(text, 'chars', 'userinfo', 'nome')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="Sobrenome"
-                    value={this.state.userinfo.sobrenome}
-                    onChangeText={(text) => this.validateInput(text, 'chars', 'userinfo', 'sobrenome')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Sobrenome"
+                        value={this.state.userinfo.sobrenome}
+                        onChangeText={(text) => this.validateInput(text, 'chars', 'userinfo', 'sobrenome')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="Email"
-                    value={this.state.userinfo.email}
-                    onChangeText={(text) => this.validateInput(text, 'email', 'userinfo', 'email')}
-                 />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Email"
+                        value={this.state.userinfo.email}
+                        onChangeText={(text) => this.validateInput(text, 'email', 'userinfo', 'email')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="Senha"
-                    value={this.state.userinfo.senha}
-                    onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'senha')}
-                    secureTextEntry={true}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Senha"
+                        value={this.state.userinfo.senha}
+                        onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'senha')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                        secureTextEntry={true}
+                    />
 
-                <TextInput
-                    placeholder="Confirmar Senha"
-                    value={this.state.userinfo.confSenha}
-                    onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'confSenha')}
-                    secureTextEntry={true}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Confirmar Senha"
+                        value={this.state.userinfo.confSenha}
+                        onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'confSenha')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                        secureTextEntry={true}
+                    />
 
-                <TextInput
-                    placeholder="Idade"
-                    value={this.state.userinfo.idade}
-                    onChangeText={(text) => this.validateInput(text, 'age', 'userinfo', 'idade')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Idade"
+                        value={this.state.userinfo.idade}
+                        onChangeText={(text) => this.validateInput(text, 'age', 'userinfo', 'idade')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="CPF"
-                    value={this.state.userinfo.cpf}
-                    onChangeText={(text) => this.validateInput(text, 'CPF', 'userinfo', 'cpf')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="CPF"
+                        value={this.state.userinfo.cpf}
+                        onChangeText={(text) => this.validateInput(text, 'CPF', 'userinfo', 'cpf')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="RG"
-                    value={this.state.userinfo.rg}
-                    onChangeText={(text) => this.validateInput(text, 'RG', 'userinfo', 'rg')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="RG"
+                        value={this.state.userinfo.rg}
+                        onChangeText={(text) => this.validateInput(text, 'RG', 'userinfo', 'rg')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="Cidade"
-                    value={this.state.localizacao.cidade}
-                    onChangeText={(text) => this.validateInput(text, 'chars', 'localizacao', 'cidade')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Cidade"
+                        value={this.state.localizacao.cidade}
+                        onChangeText={(text) => this.validateInput(text, 'chars', 'localizacao', 'cidade')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="Estado"
-                    value={this.state.localizacao.estado}
-                    onChangeText={(text) => this.validateInput(text, 'chars', 'localizacao', 'estado')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Estado"
+                        value={this.state.localizacao.estado}
+                        onChangeText={(text) => this.validateInput(text, 'chars', 'localizacao', 'estado')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
 
-                <TextInput
-                    placeholder="CEP"
-                    value={this.state.localizacao.cep}
-                    onChangeText={(text) => this.validateInput(text, 'CEP', 'localizacao', 'cep')}
-                />
-                
-                <TextInput
-                    placeholder="Endereço"
-                    value={this.state.localizacao.endereco}
-                    onChangeText={(text) => this.validateInput(text, 'endereco', 'localizacao', 'endereco')}
-                />
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="CEP"
+                        value={this.state.localizacao.cep}
+                        onChangeText={(text) => this.validateInput(text, 'CEP', 'localizacao', 'cep')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
+                    
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Endereço"
+                        value={this.state.localizacao.endereco}
+                        onChangeText={(text) => this.validateInput(text, 'endereco', 'localizacao', 'endereco')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
+                    
+                    <TouchableOpacity
+                        style = { [GStyles.buttonGlobal] }
+                        onPress={this.requestLocalizationPermission}>
+                             <Text>Conseguir Localização</Text>
+                    </TouchableOpacity>
 
-                <Button title="Get Pos" onPress={this.requestLocalizationPermission}/>
+                    <TouchableOpacity
+                        style = { [GStyles.buttonGlobal, {marginBottom: 15}] }                       
+                        onPress={() => this.props.navigation.navigate('MainAppScreen')}>
+                            <Text>Confirmar Cadastro</Text>
+                    </TouchableOpacity>
 
-                <Button
-                    title="Sign Up"
-                />
-            
+                </View>
             </ScrollView>
         );
     }

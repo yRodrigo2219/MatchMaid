@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { View, 
     TextInput,  
-    Button, 
-    AsyncStorage } from 'react-native';
+    AsyncStorage,
+    TouchableOpacity,
+    Text    } from 'react-native';
+
+import GStyles from '../GlobalStyle';
+import AuthStyles from '../Auth/Styles/MainAuthStyles';
 
 export default class SignIn extends Component{
     state = {
@@ -41,29 +45,35 @@ export default class SignIn extends Component{
 
     render(){
         return(
-            <View>
+            <View style = { GStyles.alinhamento}>
                 <TextInput
+                    style = {[GStyles.textInputGlobal,GStyles.fonte]}
                     value={this.state.login}
                     onChangeText={this.handleLoginChange}
                     placeholder="Email"
+                    placeholderTextColor={'rgba(0,0,0,0.5)'}
                 />
 
                 <TextInput
+                    style = {[GStyles.textInputGlobal,GStyles.fonte]}
                     value={this.state.password}
                     onChangeText={this.handlePasswordChange}
                     placeholder="Senha"
                     secureTextEntry={true}
+                    placeholderTextColor={'rgba(0,0,0,0.5)'}
                 />
                 
-                <Button
-                    title="Entrar"
-                    onPress={this.handleSignInAction}
-                />
+                    <TouchableOpacity
+                        style = { [GStyles.buttonGlobal,AuthStyles] }
+                        onPress={this.handleSignInAction}>
+                             <Text>Entrar</Text>
+                    </TouchableOpacity>
 
-                <Button
-                    title="Cadastrar"
-                    onPress={()=>{this.props.navigation.navigate('SignUpScreen')}}
-                />
+                    <TouchableOpacity
+                        style = { [GStyles.buttonGlobal,AuthStyles] }                       
+                        onPress={() => this.props.navigation.navigate('SignUpScreen')}>
+                            <Text>Cadastrar</Text>
+                    </TouchableOpacity>
 
             </View>
         );
