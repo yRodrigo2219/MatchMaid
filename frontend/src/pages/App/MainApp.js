@@ -49,7 +49,16 @@ export default class MainApp extends Component{
                 sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')) || false, 
                 domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter')) || false
             },
-            distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1
+            serv:{
+                baba: JSON.parse(await AsyncStorage.getItem('babaFilter')) || false,
+                limpar_casa: JSON.parse(await AsyncStorage.getItem('limpar_casaFilter')) || false,
+                lavar_louca: JSON.parse(await AsyncStorage.getItem('lavar_loucaFilter')) || false,
+                lavar_roupa: JSON.parse(await AsyncStorage.getItem('lavar_roupaFilter')) || false,
+                cuidar_casa: JSON.parse(await AsyncStorage.getItem('cuidar_casaFilter')) || false,
+                cozinhar: JSON.parse(await AsyncStorage.getItem('cozinharFilter')) || false
+            },
+            distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1,
+            preco_hora: Number.parseFloat(await AsyncStorage.getItem('preco_horaFilter')) || 100
         }
 
         await this.getMaidData();
@@ -70,7 +79,16 @@ export default class MainApp extends Component{
                         sabado: JSON.parse(await AsyncStorage.getItem('sabadoFilter')) || false, 
                         domingo: JSON.parse(await AsyncStorage.getItem('domingoFilter')) || false
                     },
-                    distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1
+                    serv:{
+                        baba: JSON.parse(await AsyncStorage.getItem('babaFilter')) || false,
+                        limpar_casa: JSON.parse(await AsyncStorage.getItem('limpar_casaFilter')) || false,
+                        lavar_louca: JSON.parse(await AsyncStorage.getItem('lavar_loucaFilter')) || false,
+                        lavar_roupa: JSON.parse(await AsyncStorage.getItem('lavar_roupaFilter')) || false,
+                        cuidar_casa: JSON.parse(await AsyncStorage.getItem('cuidar_casaFilter')) || false,
+                        cozinhar: JSON.parse(await AsyncStorage.getItem('cozinharFilter')) || false
+                    },
+                    distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1,
+                    preco_hora: Number.parseFloat(await AsyncStorage.getItem('preco_horaFilter')) || 100
                 }
                 this.searchFilterFunction(this.state.value);
                 await AsyncStorage.setItem('DrawerState', "");
@@ -185,6 +203,7 @@ export default class MainApp extends Component{
         
         const newData = this.arrayHolder.filter(item => {
             let keyDays = Object.keys(this.filterObject.dias);
+            let keyServ = Object.keys(this.filterObject.serv);
 
             let itemData = `${item.name.toUpperCase()}`;
             itemData = RemoveAccents(itemData);
@@ -192,9 +211,12 @@ export default class MainApp extends Component{
             textData = RemoveAccents(textData);
 
             if( itemData.indexOf(textData) > -1 ){
-                for(let i = 0; i < keyDays.length; i++){
+                for(let i = 0; i < (keyDays.length>keyServ.length?keyDays.length:keyServ.length); i++){
                     if(this.filterObject.dias[keyDays[i]]){
                         if(item.days[keyDays[i]] !== true) return false;
+                    }
+                    if(this.filterObject.serv[keyServ[i]]){
+                        if(item.services[keyServ[i]] !== true) return false;
                     }
                 }
 

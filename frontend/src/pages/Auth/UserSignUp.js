@@ -3,7 +3,9 @@ import { ScrollView,
     TextInput, 
     Text,
     TouchableOpacity,
-    View} from 'react-native';
+    View,
+    Alert,
+    AsyncStorage } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
@@ -134,19 +136,22 @@ export default class UserSignUp extends Component{
     requestLocalizationPermission = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if(status !== "granted"){
-            console.warn('Denied!');
+            alert("Por favor nos de permissão para acessar sua localização!");
         }else{
-            console.warn('Granted!');
+            let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+            this.setState(prevState => ({
+                localizacao:{
+                    ...prevState.localizacao,
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude
+                }
+            }));
+            await AsyncStorage.setItem("UserLatitude", (location.coords.latitude).toFixed(4).toString());
+            await AsyncStorage.setItem("UserLongitude", (location.coords.longitude).toFixed(4).toString());
+            Alert.alert("Localização",`Latitude: ${location.coords.latitude} Longitude: ${location.coords.longitude}`);
         }
 
-        let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
-        this.setState(prevState => ({
-            localizacao:{
-                ...prevState.localizacao,
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-            }
-        }));
+        
     }
 
     render(){
