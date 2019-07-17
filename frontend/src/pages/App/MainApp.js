@@ -33,7 +33,13 @@ export default class MainApp extends Component{
     arrayHolder = [];
 
     getMaidData = async () =>{
-        let data = [{name: "João", value: 25.20,celular:981445555, days:{domingo:true, segunda:true,terca:true,quarta:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Lucas", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5},{name: "Astrogildo", value: 25.20, days:{domingo:true, segunda:true}, services:{preco_hora: 5.50,baba:true,lavar_roupa: true}, localizacao:{latitude:0, longitude:0}, dist: 0.2},{ name: "Arnaldo", value: 12.50, days:{domingo:false, segunda:true}, services:{baba:true}, localizacao:{latitude:0, longitude:0}, dist: 0.5}];
+        let data = await fetch(`http://192.168.56.1:8080/?lat=${Number.parseFloat(await AsyncStorage.getItem("UserLatitude"))}&long=${Number.parseFloat(await AsyncStorage.getItem("UserLongitude"))}`,{
+            method: 'get'
+        }).then((res)=>{
+            return res.json();
+        }).then((res)=>{
+            return res;
+        });
         this.setState({maidData: data});
         this.arrayHolder = data;
     }
@@ -124,13 +130,6 @@ export default class MainApp extends Component{
         return arr;
     }
 
-    toFixedTwo = preco => {
-        if(!preco){
-            return "???.??";
-        }
-        return preco.toFixed(2);
-    }
-
     getDistance = (item) => {
         let local = item.localizacao;
         const R = 6371e3;
@@ -167,14 +166,14 @@ export default class MainApp extends Component{
                 <Image style={Style.perfilImage} source={require('../../img/userImg.png')}/>
 
                 <View style={{flex:1}}>
-                    <Text style={Style.namePerfil}>{item.name}</Text>
+                    <Text style={Style.namePerfil}>{item.userinfo.nome}</Text>
                     <View style={Style.subPerfil}>
                         <View>
-                            <Text style={Style.valuePerfil}>R$ ~{this.toFixedTwo(item.services.preco_hora)}</Text>
-                            <Text style={Style.distancePerfil}>{this.getDistance(item)}</Text>
+                            <Text style={Style.valuePerfil}>{item.servicos.preco_hora}/h</Text>
+                            <Text style={Style.distancePerfil}>{item.distancia} Km</Text>
                         </View>
                         <TouchableOpacity
-                            onPress={() => this.shareToWhatsAppWithContact(item.celular)}>
+                            onPress={() => this.shareToWhatsAppWithContact(item.userinfo.celular)}>
                             <Image style={Style.wppImage} source={require('../../img/wppIcon.png')}/>
                         </TouchableOpacity>
                     </View>
@@ -184,12 +183,12 @@ export default class MainApp extends Component{
             <Grid>
                 <Col>
                     <Text>Dias Disponíveis</Text>
-                    {this.renderDays(item.days)}
+                    {this.renderDays(item.dias_da_semana)}
                 </Col>
 
                 <Col>
                     <Text>Serviços</Text>
-                    {this.renderServices(item.services)}
+                    {this.renderServices(item.servicos)}
                 </Col>
             </Grid>
         </View>
@@ -205,22 +204,25 @@ export default class MainApp extends Component{
             let keyDays = Object.keys(this.filterObject.dias);
             let keyServ = Object.keys(this.filterObject.serv);
 
-            let itemData = `${item.name.toUpperCase()}`;
+            let itemData = `${item.userinfo.nome.toUpperCase()}`;
             itemData = RemoveAccents(itemData);
             let textData = text.toUpperCase();
             textData = RemoveAccents(textData);
 
             if( itemData.indexOf(textData) > -1 ){
-                for(let i = 0; i < (keyDays.length>keyServ.length?keyDays.length:keyServ.length); i++){
+                for(let i = 0; i < keyDays.length; i++){
                     if(this.filterObject.dias[keyDays[i]]){
-                        if(item.days[keyDays[i]] !== true) return false;
-                    }
-                    if(this.filterObject.serv[keyServ[i]]){
-                        if(item.services[keyServ[i]] !== true) return false;
+                        if(!item.dias_da_semana[keyDays[i]]) return false;
                     }
                 }
 
-                if(this.filterObject.distance < item.dist) return false;
+                for(let i = 0; i < keyServ.length; i++){
+                    if(this.filterObject.serv[keyServ[i]]){
+                        if(!item.servicos[keyServ[i]]) return false;
+                    }
+                }
+
+                if(this.filterObject.distance < item.distancia) return false;
 
                 return true;
             }else{
@@ -284,7 +286,7 @@ export default class MainApp extends Component{
                     ref="listRef"
                     data={this.state.maidData}
                     renderItem={this.renderMaidList}
-                    keyExtractor={item => item.name}
+                    keyExtractor={item => item.userinfo.email}
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFooter}/>
                 {

@@ -51,7 +51,8 @@ export default class MaidSignUp extends Component{
             lavar_roupa: false,
             cuidar_casa: false,
             cozinhar: false
-        }
+        },
+        maid: true
     }
 
     colorValidation = {
@@ -190,6 +191,27 @@ export default class MaidSignUp extends Component{
         }));
     }
 
+    handleSignUp = ()=>{
+        fetch(`http://192.168.56.1:8080/signup`,{
+            method: 'post',
+            headers:{
+                Accept: 'application/json',
+                "Content-Type": 'application/json'
+            },
+            body:JSON.stringify(this.state)
+        }).then((res)=>{
+            return res.json();
+        }).then(async(res)=>{
+            if(res){
+                await AsyncStorage.setItem('userToken', "true");
+                await AsyncStorage.setItem('userType', "User");
+                this.props.navigation.navigate('AuthLoading');
+            }else{
+                alert(res);
+            }
+        });
+    }
+
     render(){
         return(
             <ScrollView>
@@ -257,6 +279,14 @@ export default class MaidSignUp extends Component{
                         placeholder="RG"
                         value={this.state.userinfo.rg}
                         onChangeText={(text) => this.validateInput(text, 'RG', 'userinfo', 'rg')}
+                        placeholderTextColor={'rgba(0,0,0,0.5)'}
+                    />
+
+                    <TextInput
+                        style = {[GStyles.textInputGlobal,GStyles.fonte]}
+                        placeholder="Celular"
+                        value={this.state.userinfo.celular}
+                        onChangeText={(text) => this.validateInput(text, 'RG', 'userinfo', 'celular')}
                         placeholderTextColor={'rgba(0,0,0,0.5)'}
                     />
 
@@ -404,7 +434,7 @@ export default class MaidSignUp extends Component{
 
                         <TouchableOpacity
                             style = { [GStyles.buttonGlobal, {marginBottom: 15}] }                       
-                            onPress={() => this.props.navigation.navigate('MainAppScreen')}>
+                            onPress={this.handleSignUp}>
                                 <Text>Confirmar Cadastro</Text>
                         </TouchableOpacity>
                     </View>

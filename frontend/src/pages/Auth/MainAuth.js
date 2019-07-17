@@ -38,9 +38,17 @@ export default class SignIn extends Component{
     }
 
     handleSignInAction = async () => {
-        await AsyncStorage.setItem('userToken', "true");
-        await AsyncStorage.setItem('userType', "User");
-        this.props.navigation.navigate('AuthLoading');
+        fetch(`http://192.168.56.1:8080/login?email=${this.state.login}&senha=${this.state.password}`,{
+            method: 'post'
+        }).then((res)=>{
+            return res.json();
+        }).then(async(res)=>{
+            if(res){
+                await AsyncStorage.setItem('userToken', "true");
+                await AsyncStorage.setItem('userType', "User");  
+            }
+            this.props.navigation.navigate('AuthLoading');
+        });
     }
 
     render(){
