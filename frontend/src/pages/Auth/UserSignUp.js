@@ -19,8 +19,6 @@ export default class UserSignUp extends Component{
             celular: "",
             email: "",
             senha: "",
-            confSenha: "",
-            imagem: null,
             idade: "",
             rg: "",
             cpf: ""
@@ -32,8 +30,7 @@ export default class UserSignUp extends Component{
             endereco: "",
             latitude: 0.0,
             longitude: 0.0
-        },
-        maid: false
+        }
     }
 
     colorValidation = {
@@ -156,10 +153,9 @@ export default class UserSignUp extends Component{
     }
 
     handleSignUp = ()=>{
-        fetch(`http://192.168.56.1:8080/signup`,{
+        fetch(`http://192.168.56.1:8080/signup?maid=false`,{
             method: 'post',
             headers:{
-                Accept: 'application/json',
                 "Content-Type": 'application/json'
             },
             body:JSON.stringify(this.state)

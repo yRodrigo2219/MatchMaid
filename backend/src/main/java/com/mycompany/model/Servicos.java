@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class Servicos implements Serializable{
     private boolean baba, limpar_casa, lavar_louca, lavar_roupa, cuidar_casa, cozinhar;
-    private int preco_hora;
+    private String preco_hora;
 
     public Servicos(boolean baba, boolean limpar_casa, boolean lavar_louca, boolean lavar_roupa, boolean cuidar_casa,
-            boolean cozinhar, int preco_hora) {
+            boolean cozinhar, String preco_hora) {
         this.baba = baba;
         this.limpar_casa = limpar_casa;
         this.lavar_louca = lavar_louca;
@@ -65,11 +65,11 @@ public class Servicos implements Serializable{
         this.cozinhar = cozinhar;
     }
 
-    public int getPreco_hora() {
+    public String getPreco_hora() {
         return preco_hora;
     }
 
-    public void setPreco_hora(int preco_hora) {
+    public void setPreco_hora(String preco_hora) {
         this.preco_hora = preco_hora;
     }
 }

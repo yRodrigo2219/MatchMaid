@@ -183,7 +183,7 @@ export default class MainApp extends Component{
             <Grid>
                 <Col>
                     <Text>Dias Disponíveis</Text>
-                    {this.renderDays(item.dias_da_semana)}
+                    {this.renderDays(item.dias_disponiveis)}
                 </Col>
 
                 <Col>
@@ -212,7 +212,7 @@ export default class MainApp extends Component{
             if( itemData.indexOf(textData) > -1 ){
                 for(let i = 0; i < keyDays.length; i++){
                     if(this.filterObject.dias[keyDays[i]]){
-                        if(!item.dias_da_semana[keyDays[i]]) return false;
+                        if(!item.dias_disponiveis[keyDays[i]]) return false;
                     }
                 }
 

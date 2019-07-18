@@ -20,8 +20,6 @@ export default class MaidSignUp extends Component{
             celular: "",
             email: "",
             senha: "",
-            confSenha: "",
-            imagem: "",
             idade: "",
             rg: "",
             cpf: ""
@@ -34,7 +32,7 @@ export default class MaidSignUp extends Component{
             latitude: 0.0,
             longitude: 0.0
         },
-        dias_da_semana:{
+        dias_disponiveis:{
             segunda: false,
             terca: false,
             quarta: false,
@@ -51,9 +49,10 @@ export default class MaidSignUp extends Component{
             lavar_roupa: false,
             cuidar_casa: false,
             cozinhar: false
-        },
-        maid: true
+        }
     }
+
+    confSenha = "";
 
     colorValidation = {
         email: false,
@@ -112,8 +111,12 @@ export default class MaidSignUp extends Component{
                         [`${second}`]: input
                     }
                 }), ()=>{
-                    (this.state.userinfo.senha === this.state.userinfo.confSenha && this.state.userinfo.senha.length >=8) ? this.colorValidation.senha = true : this.colorValidation.senha = false;
+                    (this.state.userinfo.senha === confSenha && this.state.userinfo.senha.length >=8) ? this.colorValidation.senha = true : this.colorValidation.senha = false;
                 });
+            }
+        }else if(type === 'confSenha'){
+            if(input.length <= 20){
+                this.confSenha = input;
             }
         }else if(type === 'CEP'){
             if((fitlerNumbers.test(input) || input === "") && input.length <= 8){
@@ -192,10 +195,9 @@ export default class MaidSignUp extends Component{
     }
 
     handleSignUp = ()=>{
-        fetch(`http://192.168.56.1:8080/signup`,{
+        fetch(`http://192.168.56.1:8080/signup?maid=true`,{
             method: 'post',
             headers:{
-                Accept: 'application/json',
                 "Content-Type": 'application/json'
             },
             body:JSON.stringify(this.state)
@@ -252,8 +254,8 @@ export default class MaidSignUp extends Component{
                     <TextInput
                         style = {[GStyles.textInputGlobal,GStyles.fonte]}
                         placeholder="Confirmar Senha"
-                        value={this.state.userinfo.confSenha}
-                        onChangeText={(text) => this.validateInput(text, 'password', 'userinfo', 'confSenha')}
+                        value={this.confSenha}
+                        onChangeText={(text) => this.validateInput(text, 'confSenha', 'userinfo', 'confSenha')}
                         placeholderTextColor={'rgba(0,0,0,0.5)'}
                         secureTextEntry={true}
                     />
@@ -329,50 +331,50 @@ export default class MaidSignUp extends Component{
                     <CheckBox
                         style = {GStyles.check}
                         title='Domingo'
-                        checked={this.state.dias_da_semana.domingo}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","domingo")}}
+                        checked={this.state.dias_disponiveis.domingo}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","domingo")}}
                     />
 
                     <CheckBox
                         style = {GStyles.check}
                         title='Segunda'
-                        checked={this.state.dias_da_semana.segunda}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","segunda")}}
+                        checked={this.state.dias_disponiveis.segunda}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","segunda")}}
                     />
 
                     <CheckBox
                         style = {GStyles.check}
                         title='Terça'
-                        checked={this.state.dias_da_semana.terca}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","terca")}}
+                        checked={this.state.dias_disponiveis.terca}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","terca")}}
                     />
 
                     <CheckBox
                         style = {GStyles.check}
                         title='Quarta'
-                        checked={this.state.dias_da_semana.quarta}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","quarta")}}
+                        checked={this.state.dias_disponiveis.quarta}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","quarta")}}
                     />
 
                     <CheckBox
                         style = {GStyles.check}
                         title='Quinta'
-                        checked={this.state.dias_da_semana.quinta}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","quinta")}}
+                        checked={this.state.dias_disponiveis.quinta}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","quinta")}}
                     />
 
                     <CheckBox
                         style = {GStyles.check}
                         title='Sexta'
-                        checked={this.state.dias_da_semana.sexta}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","sexta")}}
+                        checked={this.state.dias_disponiveis.sexta}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","sexta")}}
                     />
 
                     <CheckBox
                         style = {GStyles.check}
                         title='Sábado'
-                        checked={this.state.dias_da_semana.sabado}
-                        onPress={()=>{this.handleCheckSelection("dias_da_semana","sabado")}}
+                        checked={this.state.dias_disponiveis.sabado}
+                        onPress={()=>{this.handleCheckSelection("dias_disponiveis","sabado")}}
                     />
 
                     <Text style={[GStyles.fonte, {fontSize: 22, margin: 5}]}> Tipos de Trabalho</Text>

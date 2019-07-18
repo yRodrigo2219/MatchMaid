@@ -13,12 +13,10 @@ public class UsersDao{
 
         try{
             List<Maid> listMaid = new ArrayList<>();
-            File listMaidFile = new File(filePath+"\\listMaid");
+            File listMaidFile = new File(filePath+"/listMaid");
             Maid tempMaid = new Maid();
 
-            if(!listMaidFile.exists()){
-                listMaidFile.createNewFile();
-            }
+            listMaidFile.createNewFile();
 
             try{
                 ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listMaidFile));
@@ -51,13 +49,11 @@ public class UsersDao{
 
         try{
             List<User> listUser = new ArrayList<>();
-            File listUserFile = new File(filePath+"\\listUsers");
+            File listUserFile = new File(filePath+"/listUsers");
             User tempUser = new Maid();
 
-            if(!listUserFile.exists()){
-                listUserFile.createNewFile();
-            }
-
+            listUserFile.createNewFile();
+            
             try{
                 ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listUserFile));
                 listUser = (ArrayList) inFile.readObject();
@@ -88,7 +84,7 @@ public class UsersDao{
 
         try{
             List<User> listUser = new ArrayList<>();
-            File listUserFile = new File(filePath+"\\listUsers");
+            File listUserFile = new File(filePath+"/listUsers");
 
             ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listUserFile));
             listUser = (ArrayList) inFile.readObject();
@@ -107,7 +103,7 @@ public class UsersDao{
 
         try{
             List<Maid> listMaid = new ArrayList<>();
-            File listMaidFile = new File(filePath+"\\listMaid");
+            File listMaidFile = new File(filePath+"/listMaid");
 
             ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listMaidFile));
             listMaid = (ArrayList) inFile.readObject();
@@ -133,11 +129,11 @@ public class UsersDao{
         List<String> maidDataBase = new ArrayList<>();
         
         final int r = 6371;
-	    final double pi = Math.PI;
+        final double pi = Math.PI;
 
         try{
             List<Maid> listMaid = new ArrayList<>();
-            File listMaidFile = new File(filePath+"\\listMaid");
+            File listMaidFile = new File(filePath+"/listMaid");
 
             ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listMaidFile));
             listMaid = (ArrayList) inFile.readObject();

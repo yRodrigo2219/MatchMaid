@@ -1,1 +1,9 @@
-/home/yrodrigo2219/Projects/backendJava/backend/src/main/java/com/mycompany/controller/App.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/model/DiasDaSemana.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/controller/MaidController.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/model/Localizacao.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/controller/UsersDao.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/model/Maid.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/model/UserInfo.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/controller/App.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/model/Servicos.java
+/home/yrodrigo2219/Projects/MatchMaid/backend/src/main/java/com/mycompany/model/User.java
