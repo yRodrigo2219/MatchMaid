@@ -13,7 +13,7 @@ public class UsersDao{
 
         try{
             List<Maid> listMaid = new ArrayList<>();
-            File listMaidFile = new File(filePath+"/listMaid");
+            File listMaidFile = new File(filePath+"\\listMaid");
             Maid tempMaid = new Maid();
 
             listMaidFile.createNewFile();
@@ -49,7 +49,7 @@ public class UsersDao{
 
         try{
             List<User> listUser = new ArrayList<>();
-            File listUserFile = new File(filePath+"/listUsers");
+            File listUserFile = new File(filePath+"\\listUsers");
             User tempUser = new Maid();
 
             listUserFile.createNewFile();
@@ -84,7 +84,7 @@ public class UsersDao{
 
         try{
             List<User> listUser = new ArrayList<>();
-            File listUserFile = new File(filePath+"/listUsers");
+            File listUserFile = new File(filePath+"\\listUsers");
 
             ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listUserFile));
             listUser = (ArrayList) inFile.readObject();
@@ -103,7 +103,7 @@ public class UsersDao{
 
         try{
             List<Maid> listMaid = new ArrayList<>();
-            File listMaidFile = new File(filePath+"/listMaid");
+            File listMaidFile = new File(filePath+"\\listMaid");
 
             ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listMaidFile));
             listMaid = (ArrayList) inFile.readObject();
@@ -133,7 +133,7 @@ public class UsersDao{
 
         try{
             List<Maid> listMaid = new ArrayList<>();
-            File listMaidFile = new File(filePath+"/listMaid");
+            File listMaidFile = new File(filePath+"\\listMaid");
 
             ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(listMaidFile));
             listMaid = (ArrayList) inFile.readObject();
@@ -160,6 +160,8 @@ public class UsersDao{
                 listMaid.get(i).setDistancia(d);
             }
             
+            Collections.sort(listMaid, new SortByRoll());
+
             return gson.toJson(listMaid);
 
         }catch(Exception e){
@@ -168,4 +170,17 @@ public class UsersDao{
 
         return "";
     }
+
+    public class SortByRoll implements Comparator<Maid>{
+
+        @Override
+        public int compare(Maid pessoa1, Maid pessoa2) {
+            
+            int distance1 = (int) Math.round(pessoa1.getDistancia());
+            int distance2 = (int) Math.round(pessoa2.getDistancia());
+            
+            return distance1 - distance2;
+        }
+    }
+
 }

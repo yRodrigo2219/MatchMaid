@@ -111,7 +111,7 @@ export default class MaidSignUp extends Component{
                         [`${second}`]: input
                     }
                 }), ()=>{
-                    (this.state.userinfo.senha === confSenha && this.state.userinfo.senha.length >=8) ? this.colorValidation.senha = true : this.colorValidation.senha = false;
+                    (this.state.userinfo.senha === this.confSenha && this.state.userinfo.senha.length >=8) ? this.colorValidation.senha = true : this.colorValidation.senha = false;
                 });
             }
         }else if(type === 'confSenha'){

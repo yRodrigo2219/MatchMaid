@@ -63,7 +63,7 @@ export default class MainApp extends Component{
                 cuidar_casa: JSON.parse(await AsyncStorage.getItem('cuidar_casaFilter')) || false,
                 cozinhar: JSON.parse(await AsyncStorage.getItem('cozinharFilter')) || false
             },
-            distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 1,
+            distance: Number.parseFloat(await AsyncStorage.getItem('distanceFilter')) || 40,
             preco_hora: Number.parseFloat(await AsyncStorage.getItem('preco_horaFilter')) || 100
         }
 
@@ -170,7 +170,7 @@ export default class MainApp extends Component{
                     <View style={Style.subPerfil}>
                         <View>
                             <Text style={Style.valuePerfil}>{item.servicos.preco_hora}/h</Text>
-                            <Text style={Style.distancePerfil}>{item.distancia} Km</Text>
+                            <Text style={Style.distancePerfil}>{item.distancia.toFixed(2)} Km</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => this.shareToWhatsAppWithContact(item.userinfo.celular)}>
