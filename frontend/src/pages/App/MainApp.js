@@ -6,10 +6,13 @@ import { View,
     FlatList,
     TouchableOpacity,
     Image,
+    Alert,
     ActivityIndicator,
     Linking } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { SearchBar } from 'react-native-elements';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import RemoveAccents from 'remove-accents';
 
 import Style from './Styles/MainStyle';
@@ -44,7 +47,20 @@ export default class MainApp extends Component{
         this.arrayHolder = data;
     }
 
-    async componentDidMount(){
+    requestLocalizationPermission = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if(status !== "granted"){
+            alert("Por favor nos de permissão para acessar sua localização!");
+        }else{
+            let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+
+            await AsyncStorage.setItem("UserLatitude", (location.coords.latitude).toFixed(4).toString());
+            await AsyncStorage.setItem("UserLongitude", (location.coords.longitude).toFixed(4).toString());
+            this.getMaidData();
+        }
+    }
+
+    async componentDidMount(){        
         this.filterObject = {
             dias:{
                 segunda: JSON.parse(await AsyncStorage.getItem('segundaFilter')) || false,
@@ -67,7 +83,7 @@ export default class MainApp extends Component{
             preco_hora: Number.parseFloat(await AsyncStorage.getItem('preco_horaFilter')) || 100
         }
 
-        await this.getMaidData();
+        this.requestLocalizationPermission()
         this.searchFilterFunction(this.state.value);
         this.isDrawerClosed();
     }
@@ -170,7 +186,7 @@ export default class MainApp extends Component{
                     <View style={Style.subPerfil}>
                         <View>
                             <Text style={Style.valuePerfil}>{item.servicos.preco_hora}/h</Text>
-                            <Text style={Style.distancePerfil}>{item.distancia.toFixed(2)} Km</Text>
+                            <Text style={Style.distancePerfil}>{item.distancia} Km</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => this.shareToWhatsAppWithContact(item.userinfo.celular)}>
@@ -183,7 +199,7 @@ export default class MainApp extends Component{
             <Grid>
                 <Col>
                     <Text>Dias Disponíveis</Text>
-                    {this.renderDays(item.dias_disponiveis)}
+                    {this.renderDays(item.dias_da_semana)}
                 </Col>
 
                 <Col>
@@ -212,7 +228,7 @@ export default class MainApp extends Component{
             if( itemData.indexOf(textData) > -1 ){
                 for(let i = 0; i < keyDays.length; i++){
                     if(this.filterObject.dias[keyDays[i]]){
-                        if(!item.dias_disponiveis[keyDays[i]]) return false;
+                        if(!item.dias_da_semana[keyDays[i]]) return false;
                     }
                 }
 
